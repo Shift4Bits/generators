@@ -1,0 +1,29 @@
+= {{title}}
+
+Autor: {{metadata.author}}
+
+Email: {{metadata.author_email}}
+
+Version: {{metadata.version}}
+
+Datum: {{metadata.date}}
+
+Der Zugleiter in der Cloud (im Folgenden abgekürzt als ZliC) ist eine Automatisierungssoftware, die den Zugleitbetrieb der Bahn cloudbasiert unterstützen soll. Beteiligte Akteure der Software sind grundlegend der Triebfahrzeugführer (ZF) und der Fahrdienstleiter (FDL). Ferner können auch Personen mit betrieblichen Planungs-, Leitungs- und Überwachungsfunktionen Nutzer der Software sein.
+
+Konkret soll der ZliC dem ZF als Kommunikationspartner dienen und die Aufgaben des FDL übernehmen. Kommunikationskanal bleibt der Zugfunk, die vom ZF zu gebenden Befehle bleiben ebenfalls unberührt, genauso bleiben die Antworten des ZliC gleich. Das Konzept des Zugleitbetriebs bleibt entsprechend im Ablauf gleich.
+
+Der ZliC selbst besteht aus mehreren Komponenten, welche miteinander interagieren. Zu Betrchten sind dabei auch mehrere Subsysteme. Der Akteur ZF gibt mittels Funkgerät und der Technologie Zugfunk einen Befehl ab. Dieser wird vom ZliC Funkgerät empfangen. Das Modul RadioIO konvertiert die erfolgte Kommunikation in WAV-Dateien, welche vom SIp-Webserver empfangen werden. Die Audiodatei wird mit einem Speech-to-Text Modul zu einem Text konvertiert. Das Modul „Natural Language Understandig“ versucht die Textsequenz zu interpretieren. Anschließend überprüft das Modul Nothalt auf Fehler in der Kommunikation oder durch den ZF gemeldete Gefahren. Sollten Unregelmäßigkeiten erkennbar sein, wird ein Nothalt ausgelöst. Andernfalls wird im digitalen Belegblatt die Belegung visuell veranschaulicht und in Form einer Tabelle zusätzlich dargestellt. Weiter prüft das Modul Stellprozess die Reservierung der Strecke und gibt entsprechende Befehle an Feldelemente und Weichen weiter. Parallel erhält der ZF falls notwendig eine Antwort auf seine Anfrage. Dieser Prozess läuft umgekehrt zum vorherigen. Nach textueller Formulierung der Antwort konvertiert ein Text-to-Speech Modul diese in eine WAV-Datei. Diese wird direkt an den SIP-Server gegeben und anschließend über das ZliC Funkgerät an den ZF gesendet. Jede Nachricht zwischen den Modulen ab und bis zum SIP-Server wird zusätzlich im Tracing-Modul zur Nachverfolgung protokolliert.
+
+Die ZliC setzt damit die Richtlinie 436 aus Sicht des FDL um. Trotzdem der ZliC eigenständig arbeiten kann ist ein Eingreifen durch den FDL mittels einer TAN-Nummer jederzeit möglich. Im Falle eines ausgelösten Nothalts muss von außen eingegriffen werden. Um die Störung zu beheben, muss ebenfalls die Eingabe einer TAN-Nummer erfolgen. So soll sichergestellt werden, dass Unbefugte keinen Zugriff auf das System erlangen.
+
+Im Folgenden werden die Module, ihre Interaktion untereinander, die Nachrichten, die intern verschickt werden und eine State-Mashine vorgestellt.
+
+{{#components}}
+
+:leveloffset: +1
+
+include::{{file}}[]
+
+:leveloffset: -1
+
+{{/components}}
