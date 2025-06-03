@@ -41,7 +41,7 @@ class FileManager:
         if old_data:
             print(f"Update {path}")
         else:
-            print(f"New {path}")
+            print(f"News {path}")
 
         with open(path, 'wb') as f:
             f.write(data)

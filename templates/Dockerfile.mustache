@@ -1,0 +1,29 @@
+{{{from}}}
+
+
+#set timezone to Europ/Berlin
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+RUN apt-get install -y tzdata
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+WORKDIR /app
+
+RUN python -m pip install --upgrade pip
+
+{{{include}}}
+
+COPY src src
+COPY datamodel datamodel
+
+{{#dds}}
+COPY subscriber.py subscriber.py
+COPY cyclonedds.xml cyclonedds.xml
+ENV CYCLONEDDS_URI file:///app/cyclonedds.xml
+{{/dds}}
+
+COPY wrapper.sh wrapper.sh
+RUN apt-get update && apt-get -y install dos2unix 
+RUN dos2unix wrapper.sh
+RUN chmod 0700 wrapper.sh
+CMD ./wrapper.sh
+#CMD python loop.py

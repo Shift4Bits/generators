@@ -1,0 +1,30 @@
+@startuml
+!include c4/C4.puml
+!include nano/nanoservices.puml
+title {{title}}
+{{layout}}
+
+
+{{#message}}
+Message({{id}}, "{{name}}","Message")
+note top of {{id}}: {{info}}
+{{/message}}
+
+{{#telegrams}}
+map "{{name}}" as {{id}} {
+{{#properties}}
+	{{name}} => {{type}}
+{{/properties}}
+{{#array_properties}}
+	{{name}}[] *-> {{to}}
+{{/array_properties}}
+
+}
+{{/telegrams}}
+
+
+{{#relations}}
+{{from}} --> {{to}}: "{{name}}"
+{{/relations}}
+
+@enduml

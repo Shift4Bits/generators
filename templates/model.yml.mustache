@@ -1,0 +1,106 @@
+# Generated file
+
+{{#properties}}
+{{key}} : "{{value}}"
+{{/properties}}
+
+{{#has_stations}}
+stations:
+{{#stations}}
+    - "{{name}}"
+{{/stations}}
+{{/has_stations}}
+
+
+{{#has_tracks}}
+tracks:
+{{#tracks}}
+    - stop_over_stations:
+      {{#stop_over_stations}}
+        - "{{name}}"
+      {{/stop_over_stations}}
+      routes:
+      {{#routes}}
+        "out":
+        {{#out}}
+          - from_signal: "{{from_signal}}"
+            to_signal: "{{to_signal}}"
+            station: "{{station}}"
+        {{/out}}
+        "back":
+        {{#back}}
+          - from_signal: "{{from_signal}}"
+            to_signal: "{{to_signal}}"
+            station: "{{station}}"
+        {{/back}}      
+      {{/routes}}
+{{/tracks}}
+{{/has_tracks}}
+
+{{#has_infrastructure}}
+infrastructure:
+{{#infrastructure}}
+  signals:
+  {{#signals}}
+    "{{id}}":
+      go:
+        {{#is_simulated}}
+        url: "{{url}}/control/{{board}}"
+        json: 
+          id: "{{id}}"
+          cmd: "off"
+        {{/is_simulated}}
+      halt:
+        {{#is_simulated}}
+        url: "{{url}}/control/{{board}}"
+        json: 
+          id: "{{id}}"
+          cmd: "on"
+        {{/is_simulated}}
+  {{/signals}}
+
+  points:
+  {{#points}}
+    "{{id}}":
+      left:
+        {{#is_simulated}}
+        url: "{{url}}/control/{{board}}"
+        json: 
+          id: "{{id}}"
+          cmd: "Wn1"
+        {{/is_simulated}}
+        {{#is_connected_via_rest}}
+        url: "http://10.10.10.2:8080/run/left"
+        {{/is_connected_via_rest}}
+      right:
+        {{#is_simulated}}
+        url: "{{url}}/control/{{board}}"
+        json: 
+          id: "{{id}}"
+          cmd: "Wn2"
+        {{/is_simulated}}
+        {{#is_connected_via_rest}}
+        url: "http://10.10.10.2:8080/run/right"
+        {{/is_connected_via_rest}}
+  {{/points}}
+
+{{/infrastructure}}
+{{/has_infrastructure}}
+
+{{#has_simulation}}
+simulation:
+{{#simulation}}
+  board: {{board}}
+  config: 
+    items: 
+    {{#items}}
+      - id : "{{id}}" 
+        name : "{{name}}"
+        type : "{{type}}"
+    {{/items}} 
+{{/simulation}}
+{{/has_simulation}}
+
+{{#has_traci}}
+traci: "traci"
+{{/has_traci}}

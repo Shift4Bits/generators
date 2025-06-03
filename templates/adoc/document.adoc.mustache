@@ -1,0 +1,66 @@
+= {{title}}
+Version: {{version}}
+Author: {{author}}
+
+{{#textpart}}
+== {{ headline }}
+
+image::{{image}}[]
+
+{{ text }}
+
+{{/textpart}}
+
+{{#packages}}
+=== Subsystem ```{{name}}```
+
+{{#has_components}}
+
+[cols="1,1"]
+|===
+| Name
+| Beschreibung
+
+{{#components}}
+
+|link:{{link}}[{{name}}]
+a|
+{{#has_functions}}
+{{#functions}}
+* {{name}}
+{{/functions}}
+{{/has_functions}}
+{{/components}}
+|===
+{{/has_components}}
+
+{{/packages}}
+
+{{#component}}
+
+= {{title}}
+
+{{description}}
+
+{{#has_functions}}
+{{#functions}}
+* {{name}}
+{{/functions}}
+{{/has_functions}}
+
+== Übersicht
+
+image::{{image}}[]
+
+=== Schnittstellen
+
+[cols="1,1"]
+|===
+| Name
+| Richtung
+{{#interfaces}}
+|{{name}}
+|{{direction}}
+{{/interfaces}}
+|===
+{{/component}}

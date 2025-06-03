@@ -1,0 +1,31 @@
+@startuml
+!include c4/C4.puml
+!include nano/nanoservices.puml
+title {{title}}
+{{layout}}
+
+{{#actors}}
+Actor({{id}}, "{{name}}","Actor")
+{{/actors}}
+
+{{#packages}}
+rectangle "{{name}}" as {{id}} <<subsystem>> {
+{{#components}}
+
+	component {{id}} <<Component>> [{{name}}
+{{#has_functions}}		
+---
+{{#functions}}
+* {{name}}
+{{/functions}}
+{{/has_functions}}		
+	]
+{{/components}}
+}
+{{/packages}}
+
+{{#relations}}
+{{from}} --> {{to}}: "{{name}}"
+{{/relations}}
+
+@enduml

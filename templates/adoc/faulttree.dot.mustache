@@ -1,0 +1,29 @@
+digraph fault_tree {
+rankdir=LR
+bgcolor=transparent
+
+node [shape=ellipse]
+{{#ellipses}}
+{{id}} [label="{{label}}"]
+{{/ellipses}}
+
+node [shape=rectangle]
+{{#rectangles}}
+{{id}} [label="{{label}}"]
+{{/rectangles}}
+
+node [shape=plaintext image="icons/{{or_gate_icon}}"]
+{{#orgates}}
+{{id}} [label="or"]
+{{/orgates}}
+
+node [shape=plaintext image="icons/{{and_gate_icon}}"]
+{{#andgates}}
+{{id}} [label="and"]
+{{/andgates}}
+
+{{#relations}}
+{{from}} -> {{to}}
+{{/relations}}
+
+}

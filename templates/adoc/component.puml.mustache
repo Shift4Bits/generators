@@ -1,0 +1,48 @@
+@startuml
+!include c4/C4.puml
+!include nano/nanoservices.puml
+title {{title}}
+{{layout}}
+
+
+{{#components}}
+Component({{id}}, "{{name}}","Component")
+{{/components}}
+
+{{#functions}}
+Function({{id}}, "{{name}}","Function")
+{{/functions}}
+
+{{#interfaces}}
+Interface({{id}}, "{{name}}","Interface")
+{{/interfaces}}
+
+{{#messages}}
+Message({{id}}, "{{name}}","Message")
+{{/messages}}
+
+{{#implementations}}
+{{type}}({{id}}, "{{name}}",{{type}})
+{{/implementations}}
+
+
+{{#models}}
+{{type}}({{id}}, "{{name}}",{{type}})
+{{/models}}
+
+
+
+
+{{#relations_undirected}}
+{{from}} --> {{to}}: "{{name}}"
+{{/relations_undirected}}
+{{#relations}}
+{{from}} --> {{to}}: "{{name}}"
+{{/relations}}
+{{#relations_right}}
+{{from}} -RIGHT-> {{to}}: "{{name}}"
+{{/relations_right}}
+{{#relations_up}}
+{{from}} -UP-> {{to}}: "{{name}}"
+{{/relations_up}}
+@enduml

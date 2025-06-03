@@ -31,7 +31,6 @@ def get_directory_path(sparql_wrapper: SparQLWrapper, rdf_directory: URIRef):
 
     return target
 
-
 def generate(graph, config, sandbox_only, show_unused):
 
     sparql_wrapper = SparQLWrapper(graph)
@@ -102,7 +101,8 @@ def generate(graph, config, sandbox_only, show_unused):
                 # print("template_filename",template_filename)
 
                 asset_template = Template("templates/"+template_filename)
-                asset_template.set_context(context)
+                asset_template.set_context(raw_context=context)
+                asset_template.inject_dynamic_lambdas_with_mapping_and_files()
                 file_manager.create_file(asset_output_path, asset_filename, asset_template.content())
                 # print(asset_output_path.to_rel_path(), asset_filename)
 

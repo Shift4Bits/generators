@@ -1,0 +1,15 @@
+@startuml
+!include c4/C4.puml
+!include nano/nanoservices.puml
+title {{title}}
+{{layout}}
+
+{{#states}}
+state {{name}}{{#type}} <<{{type}}>>{{/type}}
+{{/states}}
+
+{{#transitions}}
+{{source}} --> {{target}}: {{label}}
+{{/transitions}}
+
+@enduml

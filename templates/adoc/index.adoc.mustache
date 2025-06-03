@@ -1,0 +1,39 @@
+= {{title}}
+
+{{description}}
+
+== Komponentenübersicht
+
+image::{{image}}[]
+
+
+{{#packages}}
+=== Subsystem ```{{name}}```
+
+{{#has_components}}
+
+[cols="1,1"]
+|===
+| Name
+| Beschreibung
+
+{{#components}}
+
+|link:{{link}}[{{name}}] 
+a|
+{{#has_functions}}		
+{{#functions}}
+* {{name}}
+{{/functions}}
+{{/has_functions}}		
+{{/components}}
+|===
+{{/has_components}}
+
+{{/packages}}
+
+== Fehlerbäume
+
+{{#faulttrees}}
+* link:{{link}}[{{name}}] 
+{{/faulttrees}}

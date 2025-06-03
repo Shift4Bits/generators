@@ -1,0 +1,44 @@
+= {{title}}
+
+{{description}}
+
+== Übersicht
+
+image::{{image}}[]
+
+
+=== Zustände
+
+[cols="1,1"]
+|===
+| Name
+| Typ
+{{#states}}
+|{{name}} 
+|{{type}}
+{{/states}}
+|===
+
+
+=== Transitionen
+
+[cols="1,1,1,1,1,1"]
+|===
+| Name
+| Quellzustand
+| Zielzustand
+| Ereignis
+| Bedingung
+| Aktion
+{{#transitions}}
+|{{name}}
+|{{source}}
+|{{target}} 
+|{{event}}
+|{{guard}}
+|{{action}}
+{{/transitions}}
+|===
+
+
+

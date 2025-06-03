@@ -1,0 +1,63 @@
+= {{title}}
+
+{{description}}
+
+{{#has_functions}}		
+{{#functions}}
+* {{name}}
+{{/functions}}
+{{/has_functions}}	
+
+== Übersicht
+
+image::{{image}}[]
+
+=== Schnittstellen
+
+[cols="1,1"]
+|===
+| Name
+| Richtung
+{{#interfaces}}
+|{{name}} 
+|{{direction}}
+{{/interfaces}}
+|===
+
+=== Nachrichten
+
+[cols="1,1,1"]
+|===
+| Name
+| Info
+| Richtung
+{{#messages}}
+|link:{{link}}[{{name}}]
+|{{info}}
+|{{direction}}
+{{/messages}}
+|===
+
+=== Implementierungen
+
+[cols="1,1"]
+|===
+| Name
+| Typ
+{{#implementations}}
+|link:{{link}}[{{name}}]
+|{{type}}
+{{/implementations}}
+|===
+
+=== Datenmodelle
+
+[cols="1,1"]
+|===
+| Name
+| Typ
+{{#models}}
+|{{name}} 
+|{{type}}
+{{/models}}
+|===

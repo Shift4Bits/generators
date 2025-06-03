@@ -1,0 +1,84 @@
+
+class State:
+    def __init__(self, name): 
+        self.name = name
+    def __repr__(self): 
+        return self.name
+
+class Event:
+    def __init__(self, name): 
+        self.name = name
+    def __repr__(self): 
+        return self.name
+
+class Transition:
+    def __init__(self,name, event , guard , action , source , target):
+        self.name = name
+        self.event = event
+        self.guard = guard
+        self.action = action
+        self.source = source
+        self.target = target
+
+
+class {{classname}}:
+
+
+    # States
+{{#states}}
+    {{var_name}} = State("{{name}}")
+{{/states}}
+
+    # Events
+{{#events}}
+    {{var_name}} = Event("{{name}}")
+{{/events}}
+
+	# Guards
+    def is_true(self,_):
+        return True
+
+{{#guards}}
+    def {{func_name}}(self,_) -> bool:
+        raise ValueError("{{func_name}} not implemented")
+
+{{/guards}}
+
+	# Actions
+    def do_nop(self,_): #no operation
+        pass
+
+{{#actions}}
+    {{#comments}}
+    # {{text}}
+    {{/comments}}
+    def {{func_name}}(self,_) -> bool:
+        raise ValueError("{{func_name}} not implemented")
+
+{{/actions}}
+
+
+
+
+    def __init__(self):
+        self.state = self.{{init_state}}
+        # Transitions
+        self.transitions = [
+{{#transitions}}
+            Transition("{{name}}",self.{{event}} , self.{{guard}} , self.{{action}} , self.{{source}} , self.{{target}}),
+{{/transitions}}
+        ]
+
+    def raise_event(self,event,event_data):
+        for transition in self.transitions:
+
+            if self.state != transition.source:
+                continue
+            if transition.event != event:
+                continue
+            if not transition.guard(event_data):
+                continue
+            transition.action(event_data)
+            self.state = transition.target
+            return True
+        return False

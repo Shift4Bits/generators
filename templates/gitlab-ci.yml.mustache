@@ -1,0 +1,81 @@
+stages:
+  - test
+  - build
+  - deploy
+  - destroy
+
+{{#modul}}
+
+{{name}}-test:
+    stage: test
+    image: python:3.11-slim
+    before_script:
+        - apt-get update && apt-get -y install git
+        - pip install pytest
+    script:
+        - if test -f {{build}}/requirements.txt; then pip install -r {{build}}/requirements.txt; fi
+        - pytest {{build}}
+    allow_failure: true
+
+
+{{name}}-build:
+    tags:
+        - docker-build
+        - el1000
+    stage: build
+    script:
+        - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+        - docker run --privileged --rm tonistiigi/binfmt --install all
+        - docker buildx create --use --name builder
+        - docker buildx build --tag {{image}} --platform=linux/amd64,linux/arm64 --build-arg="PYTHON_VERSION=${PYTHON_VERSION}" --push {{build}}
+    after_script:
+        - docker buildx rm builder
+
+{{/modul}}
+
+deploy:
+  stage: deploy
+  image: devth/helm
+  environment:
+    name: production
+    url: {{environment_production_url}}
+  before_script: #install and configure sops
+      - wget https://github.com/getsops/sops/releases/download/v3.7.1/sops-v3.7.1.linux -O sops
+      - chmod 0700 sops
+      - echo "${AGE_SECRET_KEY}" > /tmp/age-key.txt
+      - export SOPS_AGE_KEY_FILE=/tmp/age-key.txt
+  script:
+    - kubectl config use-context osm/kubernetes/agent:osm-agent
+    - kubectl create namespace {{kubernetes_namespace}} --dry-run=client -o yaml | kubectl apply -f -
+    {{#docker_registry}}
+    - kubectl create secret docker-registry -n {{kubernetes_namespace}} reg.osmhpi.de
+        --docker-server={{server}}
+        --docker-username={{username}}
+        --docker-password={{password}} --dry-run=client -o yaml | kubectl apply -f -
+    {{/docker_registry}}  
+    {{#generic_secrets}}
+    - ./sops --decrypt {{credential_file}}.enc > {{credential_file}}
+    - kubectl create secret generic -n {{kubernetes_namespace}} {{name}}
+        --from-file=credentials={{credential_file}}
+        --dry-run=client -o yaml | kubectl apply -f -
+    {{/generic_secrets}}
+    - kubectl -n {{kubernetes_namespace}} apply -f system_lab.yml
+    - kubectl -n {{kubernetes_namespace}} get pods
+  only:
+    refs:
+      - main
+
+destroy:
+  stage: destroy
+  image: devth/helm
+  environment:
+    name: production
+    url: {{environment_production_url}}
+  script:
+    - kubectl config use-context osm/kubernetes/agent:osm-agent
+    - kubectl -n {{kubernetes_namespace}} delete -f system_lab.yml
+    - kubectl -n {{kubernetes_namespace}} get pods
+  only:
+    refs:
+      - main
+  when: manual
